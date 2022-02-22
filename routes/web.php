@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,11 +24,10 @@ use Illuminate\Support\Facades\Auth;
 //     return view('welcome' , $data);
 // });
 
-Route::get('/' , 'HomeController@index');
+Route::get('/', 'HomeController@index');
 
 Route::get('/test/{id}', function ($id) {
     return "welcome $id";
-
 })->middleware('auth');
 
 Auth::routes(['verify' => true]);
@@ -38,8 +38,17 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //     Route::get('/first',  'UserController@userShow');
 // });
 
-Route::resource('news' ,'AddController');
+Route::resource('news', 'AddController');
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/offer', 'OfferController@getOffers');
+Route::group(['perfix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function() {
+
+    Route::group(['prefix' => 'offers'], function () {
+
+        Route::get('create', 'OfferController@setCreate')->middleware('auth');
+        Route::post('store', 'OfferController@store')->name('offers.store');
+    });
+});
