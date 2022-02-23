@@ -15,6 +15,8 @@
                     @endif
 
                     {{ __('You are logged in!') }}
+                    <a href="{{route('create')}}" class="btn bg-dark m-4 text-white">Add Offer</a>
+
                 </div>
             </div>
         </div>

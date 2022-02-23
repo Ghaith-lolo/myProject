@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OfferRequest;
 use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -25,35 +26,56 @@ class OfferController extends Controller
     {
         return view('offers.create');
     }
-    public function store(Request $request)
+    public function getAllOffers()
+    {
+        $offers = Offer::select('id', 'name', 'price', 'details', 'photo')->get();
+        return view('offers.all', compact('offers'));
+    }
+
+
+
+
+    public function editOffer($offer_id)
+    {
+        // Offer::findOrFail($offer_id);
+
+        $offer = Offer::find($offer_id);
+
+        if (!$offer) {
+            return redirect()->back();
+        }
+
+        $offer = Offer::select('id', 'name', 'details', 'price', 'photo')->find($offer_id);
+        return view('offers.edit', compact('offer'));
+    }
+
+
+
+
+    public function updateOffer(OfferRequest $request, $offer_id)
+    {
+        $offer = Offer::find($offer_id);
+        if (!$offer) {
+            return redirect()->back();
+        }
+        $offer->update($request->all());
+        return redirect()->back()->with(['edited' => 'chnged data']);
+    }
+    public function store(OfferRequest $request)
 
     {
 
-        $rules = [
-            'name' => 'required|max:100|unique:offers,name',
-            'price' => 'required|numeric',
-            'details' => 'required'
-        ];
-        $messages = [
-            'name.required' => 'name of offer is empty',
-            'name.unique' => 'name of offer is used',
-            'price.required' => 'price of offer is empty',
-            'price.numeric' => 'price of offer not numeric',
-            'details.required' => 'details of offer is empty',
-        ];
-
-        $validator = Validator::make($request->all(), $rules, $messages);
-
-        if ($validator->fails()) {
-            return redirect() ->back()->withInput($request->all())->withErrors($validator);
-        }
-
+        $file_extension = $request->photo-> getClientOriginalExtension();
+        $file_name = time().'.'. $file_extension;
+        $path = 'images/offers';
+        $request->photo->move($path, $file_name);
 
         offer::create([
+            'photo' => $file_name,
             'name' => $request->name,
             'price' => $request->price,
             'details' => $request->details,
         ]);
-        return redirect()->back()->with( ['success'=> 'saved data']);
+        return redirect()->back()->with(['success' => 'saved data']);
     }
 }

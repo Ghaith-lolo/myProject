@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,11 +45,16 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/offer', 'OfferController@getOffers');
-Route::group(['perfix' => LaravelLocalization::setLocale(), 'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function() {
 
-    Route::group(['prefix' => 'offers'], function () {
+Route::group(['prefix' => 'offers'], function () {
 
-        Route::get('create', 'OfferController@setCreate')->middleware('auth');
-        Route::post('store', 'OfferController@store')->name('offers.store');
-    });
+    Route::get('create', 'OfferController@setCreate')->middleware('auth')->name('create');
+    Route::post('store', 'OfferController@store')->name('offers.store');
+
+
+    Route::get('edit/{offer_id}', 'OfferController@editOffer')->name('edit')->middleware('auth');
+    Route::post('update{offer_id}', 'OfferController@updateOffer')->name('offers.update');
+
+
+    Route::get('offer_all' , 'OfferController@getAllOffers')->name('all');
 });
