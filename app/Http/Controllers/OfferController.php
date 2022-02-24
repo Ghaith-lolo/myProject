@@ -6,9 +6,11 @@ use App\Http\Requests\OfferRequest;
 use App\Models\Offer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
+use App\Traits\OfferTrait;
 class OfferController extends Controller
 {
+    use OfferTrait;
+
     public function getOffers()
     {
         return Offer::get();
@@ -51,7 +53,6 @@ class OfferController extends Controller
 
 
 
-
     public function updateOffer(OfferRequest $request, $offer_id)
     {
         $offer = Offer::find($offer_id);
@@ -59,16 +60,12 @@ class OfferController extends Controller
             return redirect()->back();
         }
         $offer->update($request->all());
-        return redirect()->back()->with(['edited' => 'chnged data']);
+        return redirect()->back()->with(['edited' => 'changed data']);
     }
     public function store(OfferRequest $request)
 
     {
-
-        $file_extension = $request->photo-> getClientOriginalExtension();
-        $file_name = time().'.'. $file_extension;
-        $path = 'images/offers';
-        $request->photo->move($path, $file_name);
+        $file_name = $this->saveImages($request->photo, 'images/offers');
 
         offer::create([
             'photo' => $file_name,
@@ -78,4 +75,6 @@ class OfferController extends Controller
         ]);
         return redirect()->back()->with(['success' => 'saved data']);
     }
+
+
 }

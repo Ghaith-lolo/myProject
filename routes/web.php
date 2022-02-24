@@ -58,3 +58,4 @@ Route::group(['prefix' => 'offers'], function () {
 
     Route::get('offer_all' , 'OfferController@getAllOffers')->name('all');
 });
+ Route::get('youtupe' ,'YoutupeController@getVideo');

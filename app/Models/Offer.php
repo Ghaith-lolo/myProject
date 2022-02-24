@@ -15,7 +15,6 @@ class Offer extends Model
         'name',
         'price',
         'details',
-
         'created-at',
         'updated_at',
 

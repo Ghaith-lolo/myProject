@@ -8,7 +8,7 @@
                     <th scope="col" class="px-3">Offer name </th>
                     <th scope="col" class="px-3"> Offer Price </th>
                     <th scope="col" class="px-3">Offer details</th>
-                    {{-- <th scope="col" class="px-3">Offer picture</th> --}}
+                    <th scope="col" class="px-3">Offer picture</th>
                     <th scope="col" class="px-3"> Operation</th>
                 </tr>
             </thead>
@@ -19,7 +19,7 @@
                         <td class="px-3">{{ $offer->name }}</td>
                         <td class="px-3">{{ $offer->price }}</td>
                         <td class="px-3">{{ $offer->details }}</td>
-                        {{-- <td class="px-3"> <img src="{{ asset('images/offers' . $offer->photo) }}" alt="" width="100px"></td> --}}
+                        <td class="px-3"> <img src="{{ asset('images/offers' . $offer->photo) }}" alt="" width="40px"></td>
                         <td class="px-3"><a href="{{ Route('edit', $offer->id) }}" class="btn btn-success">
                                 Edit</a></td>
                     </tr>
