@@ -54,8 +54,22 @@ Route::group(['prefix' => 'offers'], function () {
 
     Route::get('edit/{offer_id}', 'OfferController@editOffer')->name('edit')->middleware('auth');
     Route::post('update{offer_id}', 'OfferController@updateOffer')->name('offers.update');
+    Route::get('delete{offer_id}', 'OfferController@deleteOffer')->name('offers.delete');
 
 
     Route::get('offer_all' , 'OfferController@getAllOffers')->name('all');
 });
  Route::get('youtupe' ,'YoutupeController@getVideo');
+
+
+
+
+
+Route::get('has-one' , 'relationController@hasOneRelation');
+Route::get('has-one-rev' , 'relationController@hasOneRelationRevers');
+
+Route::get('has-one-has-phone' , 'relationController@hasOneRelationHasPhone');
+Route::get('has-one-not-has-phone' , 'relationController@hasOneRelationNotHasPhone');
+
+
+

@@ -50,6 +50,17 @@ class OfferController extends Controller
         $offer = Offer::select('id', 'name', 'details', 'price', 'photo')->find($offer_id);
         return view('offers.edit', compact('offer'));
     }
+    public function deleteOffer($offer_id){
+        $offer = Offer::find($offer_id);
+
+        if (!$offer) {
+            return redirect()->back();
+        }
+
+        $offer -> delete();
+        return redirect()->route('all')->with(['success' =>'deleted successfully']);
+
+    }
 
 
 
